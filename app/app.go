@@ -8,12 +8,18 @@ import (
 
 type App struct{}
 
+// run server
 func (a *App) Run(addr string) error {
-	initRoutes()
-	return http.ListenAndServe(addr, nil)
+	mux := initRoutes()
+	return http.ListenAndServe(addr, mux)
 }
 
-func initRoutes() {
-	http.HandleFunc("/", service.Index)
-	http.HandleFunc("/getparam", service.GetParameter)
+// init mux
+func initRoutes() *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", service.Index)
+	mux.HandleFunc("/bar", service.Bar)
+	mux.Handle("/foo", &service.FooHandler{})
+
+	return mux
 }
