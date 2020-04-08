@@ -20,25 +20,24 @@ func (f *FooHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	user := new(User)
 	err := json.NewDecoder(r.Body).Decode(user)
 	if err != nil {
-		fmt.Println(err)
-		fmt.Fprintln(w, err)
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintln(w, "Bad Request: ", err)
+		return
 	}
-	fmt.Fprintf(
-		w,
-		"%s\n%s\n%s\n%v",
-		user.FirstName,
-		user.LastName,
-		user.Email,
-		user.CreatedAt,
-	)
+	user.CreatedAt = time.Now()
+
+	data, _ := json.Marshal(user)
+	w.WriteHeader(http.StatusCreated)
+	w.Header().Add("Content-Type", "application/json")
+	fmt.Fprint(w, string(data))
 }
 
 // index page
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Hello, world!")
+	fmt.Fprint(w, "Hello, world!")
 }
 
 // get parameter exam
 func Bar(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, r.URL.Query())
+	fmt.Fprintf(w, "Hello, %s", r.URL.Query().Get("name"))
 }

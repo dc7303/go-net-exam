@@ -6,10 +6,8 @@ import (
 	"go-net-exam/app/service"
 )
 
-type App struct{}
-
 // run server
-func (a *App) Run(addr string) error {
+func Run(addr string) error {
 	mux := initRoutes()
 	return http.ListenAndServe(addr, mux)
 }

@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-	app := app.App{}
 	if err := app.Run(":8080"); err != nil {
 		log.Fatal(err)
 	} else {
