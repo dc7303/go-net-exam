@@ -18,6 +18,14 @@ func initRoutes() *http.ServeMux {
 	mux.HandleFunc("/", service.Index)
 	mux.HandleFunc("/bar", service.Bar)
 	mux.Handle("/foo", &service.FooHandler{})
+	mux.Handle(
+		"/fileserver/",
+		http.StripPrefix(
+			"/fileserver/",
+			http.FileServer(http.Dir("public")),
+		),
+	)
+	mux.HandleFunc("/uploads", service.UploadsHanlder)
 
 	return mux
 }
