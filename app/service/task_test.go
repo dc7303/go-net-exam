@@ -3,6 +3,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -130,4 +131,29 @@ func TestUploads(t *testing.T) {
 	originFile.Read(originData)
 
 	assert.Equal(originData, uploadData)
+}
+
+// func TestUsers(t *testing.T) {
+// 	assert := assert.New(t)
+
+// 	res := httptest.NewRecorder()
+// 	req := httptest.NewRequest("GET", "/users", nil)
+
+// 	UsersHandler(res, req)
+// 	assert.Equal(http.StatusOK, res.Code)
+// 	data, _ := ioutil.ReadAll(res.Body)
+// 	assert.Contains(string(data), "Get UserInfo")
+// }
+
+func TestUsersGetInfo(t *testing.T) {
+	assert := assert.New(t)
+
+	res := httptest.NewRecorder()
+	req := httptest.NewRequest("POST", "/users/margurt", nil)
+
+	UsersHandler(res, req)
+	assert.Equal(http.StatusOK, res.Code)
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println(string(data))
+	assert.Contains(string(data), "User ID:margurt")
 }

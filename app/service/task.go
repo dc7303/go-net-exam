@@ -8,6 +8,8 @@ import (
 	"os"
 	"path"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 type User struct {
@@ -79,4 +81,9 @@ func UploadsHanlder(w http.ResponseWriter, r *http.Request) {
 	io.Copy(file, uploadFile)
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, filepath)
+}
+
+func UsersHandler(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+	fmt.Fprint(w, "User ID:", id)
 }

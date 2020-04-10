@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"go-net-exam/app/service"
+
+	"github.com/gorilla/mux"
 )
 
 // run server
@@ -13,8 +15,9 @@ func Run(addr string) error {
 }
 
 // init mux
-func initRoutes() *http.ServeMux {
-	mux := http.NewServeMux()
+func initRoutes() *mux.Router {
+	mux := mux.NewRouter()
+	// mux := http.NewServeMux()
 	mux.HandleFunc("/", service.Index)
 	mux.HandleFunc("/bar", service.Bar)
 	mux.Handle("/foo", &service.FooHandler{})
@@ -26,6 +29,7 @@ func initRoutes() *http.ServeMux {
 		),
 	)
 	mux.HandleFunc("/uploads", service.UploadsHanlder)
+	mux.HandleFunc("/users/{id}", service.UsersHandler).Methods("GET", "POST")
 
 	return mux
 }
