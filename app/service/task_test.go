@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -150,7 +151,7 @@ func TestUsersGetInfo(t *testing.T) {
 
 	res := httptest.NewRecorder()
 	req := httptest.NewRequest("POST", "/users/margurt", nil)
-
+	req = mux.SetURLVars(req, map[string]string{"id": "margurt"})
 	UsersHandler(res, req)
 	assert.Equal(http.StatusOK, res.Code)
 	data, _ := ioutil.ReadAll(res.Body)
